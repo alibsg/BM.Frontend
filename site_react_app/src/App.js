@@ -3,9 +3,11 @@
 import React, { Component } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import './App.css';
+import './components/sign-in/SignIn';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import SignIn from './components/sign-in/SignIn';
 
 class App extends Component {
   constructor(props) {
@@ -25,7 +27,7 @@ class App extends Component {
       }, {
         make: 'Porsche', model: 'Boxter', price: 72000,
       }],
-    }
+    };
   }
 
   render() {
@@ -41,6 +43,7 @@ class App extends Component {
           columnDefs={this.state.columnDefs}
           rowData={this.state.rowData}
         />
+        <SignIn />
       </div>
     );
   }
