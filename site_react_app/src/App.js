@@ -1,10 +1,10 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-filename-extension */
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import './App.css';
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import SignIn from './components/sign-in/SignIn'
+import { userActions } from './actions'
 
 class App extends Component {
   constructor(props) {
@@ -16,6 +16,7 @@ class App extends Component {
 
   onSubmit(username, password){
     this.setState({ loading: true});
+    this.props.dispatch(userActions.login(username,password));
     console.log(username,password);
   }
   render() {
@@ -33,4 +34,9 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+  };
+}
+
+export default connect(mapStateToProps)(App);
