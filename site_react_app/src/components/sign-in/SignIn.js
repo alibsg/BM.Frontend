@@ -2,10 +2,13 @@
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/jsx-one-expression-per-line */
-import React from 'react';
+import React , { Component } from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
+import blue from '@material-ui/core/colors/blue';
+import Fab from '@material-ui/core/Fab'
+import CircularProgress from '@material-ui/core/CircularProgress';
+import CheckIcon from '@material-ui/icons/Check'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -49,9 +52,24 @@ const styles = theme => ({
     direction: 'rtl',
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing.unit,
+  },  
+  wrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: theme.spacing.unit*2,    
   },
-  submit: {
-    marginTop: theme.spacing.unit * 3,
+  buttonSuccess: { 
+    backgroundColor: blue[500],
+    '&:hover': {
+      backgroundColor: blue[700],
+    },
+  },
+  fabProgress: {
+    color: blue[500],
+    position: 'absolute',
+    zIndex: 1,
   },
 });
 
@@ -68,49 +86,75 @@ const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 // Custom Material-UI class name generator.
 const generateClassName = createGenerateClassName();
 
-function SignIn(props) {
-  const { classes } = props;
+class SignIn extends Component {
+  constructor(){
+    super();
+    this.state = {
+      userName: '',
+      password: '',
+    }
+    
+  }
 
-  return (
-    <MuiThemeProvider theme={theme}>
-    <JssProvider jss={jss} generateClassName={generateClassName}>
-    <main className={classes.main}>
-      <CssBaseline />
-      <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          ورود
-        </Typography>
-        <form className={classes.form}>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">شماره موبایل</InputLabel>
-            <Input id="email" name="email" autoComplete="email" autoFocus />
-          </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="password">رمز عبور</InputLabel>
-            <Input name="password" type="password" id="password" autoComplete="current-password" />
-          </FormControl>
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
+
+  onChange(event){
+    this.setState({ [event.target.id] : event.target.value});
+  }
+  onSubmit(event){
+    event.preventDefault();
+    const {userName, password} = this.state;
+    if(this.props.onSubmit){
+      this.props.onSubmit(userName, password);
+    }
+  }
+
+  render(){
+  const { classes } = this.props;
+    return (
+      <MuiThemeProvider theme={theme}>
+      <JssProvider jss={jss} generateClassName={generateClassName}>
+      <main className={classes.main}>
+        <CssBaseline />
+        <Paper className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
             ورود
-          </Button>
-        </form>
-      </Paper>
-    </main>
-    </JssProvider>
-    </MuiThemeProvider>
-  );
+          </Typography>
+          <form onSubmit={this.onSubmit.bind(this)} className={classes.form}>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="email">شماره موبایل/نام کاربری</InputLabel>
+              <Input id="userName" name="email" autoComplete="email" autoFocus value={this.state.userName} onChange={this.onChange.bind(this)}/>
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="password">رمز عبور</InputLabel>
+              <Input name="password" type="password" id="password" autoComplete="current-password" value={this.state.password} onChange={this.onChange.bind(this)} />
+            </FormControl>
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="مرا به خاطر بسپار"
+            />
+            <div className={classes.wrapper}>
+              <Fab 
+                type="submit" 
+                fullWidth
+                variant="contained"                
+                color="primary" 
+                className={classes.buttonSuccess}
+              >
+                <CheckIcon />
+              </Fab>
+              {this.props.loading && <CircularProgress size={68} className={classes.fabProgress} />}
+            </div>
+
+          </form>
+        </Paper>
+      </main>
+      </JssProvider>
+      </MuiThemeProvider>
+    );
+  }
 }
 
 SignIn.propTypes = {

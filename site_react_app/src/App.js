@@ -9,8 +9,14 @@ import SignIn from './components/sign-in/SignIn'
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {     
+    this.state = {
+      loading: false,     
     }
+  }
+
+  onSubmit(username, password){
+    this.setState({ loading: true});
+    console.log(username,password);
   }
   render() {
     return (
@@ -21,7 +27,7 @@ class App extends Component {
           backgroundColor: 'transparent'
         }}
       > 
-      <SignIn />        
+      <SignIn onSubmit={this.onSubmit.bind(this)} loading={this.state.loading}/>        
       </div>
     );
   }
