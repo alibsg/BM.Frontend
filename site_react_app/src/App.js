@@ -1,51 +1,27 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-filename-extension */
 import React, { Component } from 'react';
-import { AgGridReact } from 'ag-grid-react';
 import './App.css';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import Button from '@material-ui/core/Button';
 import SignIn from './components/sign-in/SignIn'
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      columnDefs: [{
-        headerName: 'Make', field: 'make',
-      }, {
-        headerName: 'Model', field: 'model',
-      }, {
-        headerName: 'Price', field: 'price',
-      }],
-      rowData: [{
-        make: 'Toyota', model: 'Celica', price: 35000,
-      }, {
-        make: 'Ford', model: 'Mondeo', price: 32000,
-      }, {
-        make: 'Porsche', model: 'Boxter', price: 72000,
-      }],
-    };
+    this.state = {     
+    }
   }
-
   render() {
     return (
       <div
         className="ag-theme-balham"
         style={{
-          height: '500px',
-          width: '600px',
+          margin: 'auto',
+          backgroundColor: 'transparent'
         }}
-      >
-        <AgGridReact
-          columnDefs={this.state.columnDefs}
-          rowData={this.state.rowData}
-        />
-        <SignIn />
-        <Button variant="contained" color="primary">
-        Welcome Material UI
-        </Button>
+      > 
+      <SignIn />        
       </div>
     );
   }

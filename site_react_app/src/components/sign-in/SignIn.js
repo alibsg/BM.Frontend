@@ -16,6 +16,11 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import {MuiThemeProvider, createMuiTheme, createGenerateClassName, jssPreset} from '@material-ui/core/styles'
+import { create } from 'jss';
+import rtl from 'jss-rtl';
+import JssProvider from 'react-jss/lib/JssProvider';
+
 
 const styles = theme => ({
   main: {
@@ -41,6 +46,7 @@ const styles = theme => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
+    direction: 'rtl',
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing.unit,
   },
@@ -49,10 +55,25 @@ const styles = theme => ({
   },
 });
 
+const theme = createMuiTheme({
+  direction: 'rtl',
+  typography: {
+    fontFamily: '"Vazir", sans-serif'
+  },
+});
+
+// Configure JSS
+const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
+
+// Custom Material-UI class name generator.
+const generateClassName = createGenerateClassName();
+
 function SignIn(props) {
   const { classes } = props;
 
   return (
+    <MuiThemeProvider theme={theme}>
+    <JssProvider jss={jss} generateClassName={generateClassName}>
     <main className={classes.main}>
       <CssBaseline />
       <Paper className={classes.paper}>
@@ -60,15 +81,15 @@ function SignIn(props) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          ورود
         </Typography>
         <form className={classes.form}>
           <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">Email Address</InputLabel>
+            <InputLabel htmlFor="email">شماره موبایل</InputLabel>
             <Input id="email" name="email" autoComplete="email" autoFocus />
           </FormControl>
           <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="password">Password</InputLabel>
+            <InputLabel htmlFor="password">رمز عبور</InputLabel>
             <Input name="password" type="password" id="password" autoComplete="current-password" />
           </FormControl>
           <FormControlLabel
@@ -82,11 +103,13 @@ function SignIn(props) {
             color="primary"
             className={classes.submit}
           >
-            Sign in
+            ورود
           </Button>
         </form>
       </Paper>
     </main>
+    </JssProvider>
+    </MuiThemeProvider>
   );
 }
 
