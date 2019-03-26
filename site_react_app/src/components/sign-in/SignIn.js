@@ -76,6 +76,7 @@ const styles = theme => ({
 const theme = createMuiTheme({
   direction: 'rtl',
   typography: {
+    useNextVariants: true,
     fontFamily: '"Vazir", sans-serif'
   },
 });
@@ -95,7 +96,6 @@ class SignIn extends Component {
     }
     
   }
-
 
   onChange(event){
     this.setState({ [event.target.id] : event.target.value});
@@ -137,9 +137,7 @@ class SignIn extends Component {
             />
             <div className={classes.wrapper}>
               <Fab 
-                type="submit" 
-                fullWidth
-                variant="contained"                
+                type="submit"                                         
                 color="primary" 
                 className={classes.buttonSuccess}
               >

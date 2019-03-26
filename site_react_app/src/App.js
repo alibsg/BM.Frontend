@@ -28,14 +28,16 @@ class App extends Component {
           backgroundColor: 'transparent'
         }}
       > 
-      <SignIn onSubmit={this.onSubmit.bind(this)} loading={this.state.loading}/>        
+      <SignIn onSubmit={this.onSubmit.bind(this)} loading={this.props.loggingIn}/>        
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
+  const { loggingIn } = state.authentication;
   return {
+    loggingIn
   };
 }
 
