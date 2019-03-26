@@ -2,7 +2,8 @@ import { userConstants } from '../constants'
 import { userService } from '../services'
 
 export const userActions = {
-    login,    
+    login, 
+    logout,   
 }
 
 function login(username, password) {
@@ -26,3 +27,8 @@ function login(username, password) {
         }
     } 
 };
+
+function logout(){
+    userService.logout();
+    return { type: userConstants.LOGOUT };
+}

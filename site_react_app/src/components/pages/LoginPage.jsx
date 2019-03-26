@@ -2,27 +2,22 @@
 /* eslint-disable react/jsx-filename-extension */
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import './App.css';
-import SignIn from './components/sign-in/SignIn'
-import { userActions } from './actions'
+import SignIn from '../sign-in/SignIn.jsx'
+import { userActions } from '../../actions'
 
-class App extends Component {
+class LoginPage extends Component {
   constructor(props) {
-    super(props);
-    this.state = {
-      loading: false,     
-    }
+    super(props); 
+    // reset login status
+    this.props.dispatch(userActions.logout());   
   }
 
-  onSubmit(username, password){
-    this.setState({ loading: true});
-    this.props.dispatch(userActions.login(username,password));
-    console.log(username,password);
+  onSubmit(username, password){    
+    this.props.dispatch(userActions.login(username,password));    
   }
   render() {
     return (
-      <div
-        className="ag-theme-balham"
+      <div        
         style={{
           margin: 'auto',
           backgroundColor: 'transparent'
@@ -41,4 +36,6 @@ const mapStateToProps = state => {
   };
 }
 
-export default connect(mapStateToProps)(App);
+const connectedloginPage = connect(mapStateToProps)(LoginPage);
+
+export { connectedloginPage as LoginPage};

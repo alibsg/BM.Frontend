@@ -22,6 +22,8 @@ export const authentication = (state = initialState, action) => {
         case userConstants.LOGIN_FAILURE:
             console.log(action.type,action.user);
             return {};
+        case userConstants.LOGOUT:
+            return {};
         default:
             return state;
     }
