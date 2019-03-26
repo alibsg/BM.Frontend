@@ -1,5 +1,6 @@
 import { userConstants } from '../constants'
 import { userService } from '../services'
+import { history } from '../tools/history'
 
 export const userActions = {
     login, 
@@ -13,6 +14,7 @@ function login(username, password) {
         userService.login(username, password).then(
             user => {
                 dispatch(toReducer(userConstants.LOGIN_SUCCESS,user));
+                history.push('/');
             },
             error => {
                 dispatch(toReducer(userConstants.LOGIN_FAILURE,error.toString()))
