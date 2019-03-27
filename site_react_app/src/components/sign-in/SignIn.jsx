@@ -109,7 +109,7 @@ class SignIn extends Component {
   }
 
   render(){
-  const { classes } = this.props;
+    const { classes } = this.props;
     return (
       <MuiThemeProvider theme={theme}>
       <JssProvider jss={jss} generateClassName={generateClassName}>
@@ -145,7 +145,6 @@ class SignIn extends Component {
               </Fab>
               {this.props.loading && <CircularProgress size={68} className={classes.fabProgress} />}
             </div>
-
           </form>
         </Paper>
       </main>
