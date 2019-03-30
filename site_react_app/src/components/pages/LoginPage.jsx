@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import Button from '@material-ui/core/Button';
 import SignIn from '../sign-in/SignIn.jsx'
-import RegisterUserModal from '../user-edit/RegisterUserModal'
+import RegisterUserDialog from '../user-edit/RegisterUserDialog'
 import { userActions } from '../../actions'
 
 class LoginPage extends Component {
@@ -37,7 +37,7 @@ class LoginPage extends Component {
       > 
       <SignIn onSubmit={this.onSubmit.bind(this)} loading={this.props.loggingIn}/>
       <Button onClick={this.onRegister.bind(this)}>Register User</Button>
-      <RegisterUserModal 
+      <RegisterUserDialog
         open={this.state.openRegister} 
         onSubmit={this.onRegisterUserModalSubmit.bind(this)}
       />
