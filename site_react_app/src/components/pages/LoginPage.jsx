@@ -30,17 +30,39 @@ class LoginPage extends Component {
   render() {
     return (
       <div        
-        style={{
-          margin: 'auto',
-          backgroundColor: 'transparent'
+        style={{          
+          margin: 'auto',          
+          backgroundColor: 'transparent',        
         }}
-      > 
+      >
+      <div        
+      style={{
+        position: 'absolute', 
+        left: '50%', 
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+        direction: 'rtl',
+        display: 'table',
+        backgroundColor: 'transparent',        
+      }}
+      >  
       <SignIn onSubmit={this.onSubmit.bind(this)} loading={this.props.loggingIn}/>
-      <Button onClick={this.onRegister.bind(this)}>Register User</Button>
+      <Button 
+      onClick={this.onRegister.bind(this)}
+      color='primary'
+      size='medium'      
+      style = {{
+        direction: 'rtl',
+        fontFamily:'"Vazir", sans-serif',               
+      }}
+      >
+      ثبت کاربر جدید
+      </Button>
       <RegisterUserDialog
         open={this.state.openRegister} 
         onSubmit={this.onRegisterUserModalSubmit.bind(this)}
       />
+      </div>
       </div>
     );
   }

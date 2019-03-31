@@ -24,7 +24,7 @@ const theme = createMuiTheme({
     },
 });
 
-class RegisterUserModal extends Component {    
+class RegisterUserDialog extends Component {    
     handleClose = () => {
         if(this.props.onSubmit){
             this.props.onSubmit();
@@ -49,24 +49,25 @@ class RegisterUserModal extends Component {
                 }
             >
                 <DialogTitle id="form-dialog-title">ثبت کاربر جدید</DialogTitle>
+                <form >
                 <DialogContent>
                     <RegisterUser/>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.handleClose} color="primary">
+                    <Button onClick={this.handleClose} color="secondary">
                         لغو
                     </Button>
-                    <Button onClick={this.handleClose} color="primary">
+                    <Button type= 'submit' color="primary">
                         تایید
                     </Button>
                 </DialogActions>
+                </form>
             </Dialog>
             </JssProvider>
             </MuiThemeProvider>
-            
         );
     }
 }
 
 // We need an intermediary variable for handling the recursive nesting.
-export default RegisterUserModal;
+export default RegisterUserDialog;

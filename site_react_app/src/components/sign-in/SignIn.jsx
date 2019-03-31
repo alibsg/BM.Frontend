@@ -108,6 +108,12 @@ class SignIn extends Component {
     }
   }
 
+  myValidity(e){
+    e.target.setCustomValidity('');
+    if(!e.target.validity.valid)
+      e.target.setCustomValidity('لطفا این قسمت را پر کنید')
+  }
+
   render(){
     const { classes } = this.props;
     return (
@@ -123,11 +129,11 @@ class SignIn extends Component {
             ورود
           </Typography>
           <form onSubmit={this.onSubmit.bind(this)} className={classes.form}>
-            <FormControl margin="normal" required fullWidth>
+            <FormControl margin="normal" required fullWidth onInvalid={this.myValidity.bind(this)}>
               <InputLabel htmlFor="email">شماره موبایل/نام کاربری</InputLabel>
               <Input id="userName" name="email" autoComplete="email" autoFocus value={this.state.userName} onChange={this.onChange.bind(this)}/>
             </FormControl>
-            <FormControl margin="normal" required fullWidth>
+            <FormControl margin="normal" required fullWidth onInvalid={this.myValidity.bind(this)}>
               <InputLabel htmlFor="password">رمز عبور</InputLabel>
               <Input name="password" type="password" id="password" autoComplete="current-password" value={this.state.password} onChange={this.onChange.bind(this)} />
             </FormControl>
