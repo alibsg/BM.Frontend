@@ -4,7 +4,8 @@ import { history } from '../tools/history'
 
 export const userActions = {
     login, 
-    logout,   
+    logout,
+    register,   
 }
 
 function login(username, password) {
@@ -21,16 +22,32 @@ function login(username, password) {
             }
         )            
     }
-    
-    function toReducer(type,payload) {
-        return {
-            type,
-            user: payload,
-        }
-    } 
 };
 
 function logout(){
     userService.logout();
     return { type: userConstants.LOGOUT };
 }
+
+function register(user){
+    return dispatch => {
+        dispatch(toReducer(userConstants.REGISTER_REQUEST,user));
+        userService.register(user).then(
+            user => {
+                dispatch(toReducer(userConstants.REGISTER_SUCCESS,user));
+            },
+            error => {
+                dispatch(toReducer(userConstants.REGISTER_FAILURE,error.toString()));
+            }
+        )
+
+    }
+
+}
+
+function toReducer(type,payload) {
+    return {
+        type,
+        user: payload,
+    }
+} 

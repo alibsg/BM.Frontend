@@ -14,11 +14,16 @@ const styles = theme => ({
 });
 
 class RegisterUser extends Component{
+    onUserChange(user){
+      const { onChange } = this.props;
+      if(onChange)
+        onChange(user);
+    }
     render(){
       const { classes } = this.props;
       return(
         <Paper className={classes.paper}>
-              <UserEdit/>                           
+              <UserEdit onChange={this.onUserChange.bind(this)}/>                           
         </Paper>
       );
     }

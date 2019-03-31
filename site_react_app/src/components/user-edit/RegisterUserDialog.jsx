@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -9,6 +10,7 @@ import JssProvider from 'react-jss/lib/JssProvider';
 import { create } from 'jss';
 import rtl from 'jss-rtl';
 import RegisterUser from './RegisterUser'
+import { userActions } from '../../actions'
 
 // Configure JSS
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
@@ -24,11 +26,20 @@ const theme = createMuiTheme({
     },
 });
 
-class RegisterUserDialog extends Component {    
+class RegisterUserDialog extends Component {
+    user = {};    
     handleClose = () => {
         if(this.props.onSubmit){
             this.props.onSubmit();
         }                
+    }
+
+    onUserChange(user){
+        this.user = user;
+    }
+
+    handleSubmit(){
+        this.props.dispatch(userActions.register(this.user));
     }
 
     render() {       
@@ -49,9 +60,9 @@ class RegisterUserDialog extends Component {
                 }
             >
                 <DialogTitle id="form-dialog-title">ثبت کاربر جدید</DialogTitle>
-                <form >
+                <form onSubmit={this.handleSubmit.bind(this)}>
                 <DialogContent>
-                    <RegisterUser/>
+                    <RegisterUser onChange={this.onUserChange.bind(this)}/>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={this.handleClose} color="secondary">
@@ -69,5 +80,10 @@ class RegisterUserDialog extends Component {
     }
 }
 
-// We need an intermediary variable for handling the recursive nesting.
-export default RegisterUserDialog;
+const mapStateToProps = state =>{
+    const { registering } = state;
+    return{
+        registering,
+    }
+}
+export default connect(mapStateToProps)(RegisterUserDialog);
