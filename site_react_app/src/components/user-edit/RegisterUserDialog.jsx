@@ -11,6 +11,7 @@ import { create } from 'jss';
 import rtl from 'jss-rtl';
 import RegisterUser from './RegisterUser'
 import { userActions } from '../../actions'
+import { DialogContentText } from '@material-ui/core';
 
 // Configure JSS
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
@@ -42,6 +43,12 @@ class RegisterUserDialog extends Component {
         this.props.dispatch(userActions.register(this.user));
     }
 
+    componentWillReceiveProps(){
+        if(this.props.registerSuccess){
+            this.handleClose();
+        }
+    }
+
     render() {       
         return ( 
             <MuiThemeProvider theme={theme}>
@@ -64,6 +71,13 @@ class RegisterUserDialog extends Component {
                 <DialogContent>
                     <RegisterUser onChange={this.onUserChange.bind(this)}/>
                 </DialogContent>
+                {this.props.registerError&&
+                <DialogContent>
+                    <DialogContentText>
+                    خطا در ثبت کاربر. لطفا مجددا تلاش نمایید.
+                    </DialogContentText>
+                </DialogContent>
+                }
                 <DialogActions>
                     <Button onClick={this.handleClose} color="secondary">
                         لغو
@@ -72,7 +86,7 @@ class RegisterUserDialog extends Component {
                         تایید
                     </Button>
                 </DialogActions>
-                </form>
+                </form>                
             </Dialog>
             </JssProvider>
             </MuiThemeProvider>
@@ -81,9 +95,12 @@ class RegisterUserDialog extends Component {
 }
 
 const mapStateToProps = state =>{
-    const { registering } = state;
+    const { registering, registerError, registerSuccess, errorMessage } = state;
     return{
         registering,
+        registerError,
+        registerSuccess,
+        errorMessage,
     }
 }
 export default connect(mapStateToProps)(RegisterUserDialog);
