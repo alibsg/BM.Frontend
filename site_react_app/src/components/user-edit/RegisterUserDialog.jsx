@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -11,7 +10,6 @@ import JssProvider from 'react-jss/lib/JssProvider';
 import { create } from 'jss';
 import rtl from 'jss-rtl';
 import RegisterUser from './RegisterUser'
-import { userActions } from '../../actions'
 import { DialogContentText } from '@material-ui/core';
 
 // Configure JSS
@@ -30,29 +28,25 @@ const theme = createMuiTheme({
 
 class RegisterUserDialog extends Component {
     user = {};    
-    handleClose = () => {
+    handleClose = ()=>{
         if(this.props.onSubmit){
-            this.props.onSubmit();
+            this.props.onSubmit(null);
         }                
     }
 
-    onUserChange(user){
+    onUserChange = (user) => {
         this.user = user;
     }
 
-    handleSubmit(){
-        debugger
-        this.props.dispatch(userActions.register(this.user));
-    }
-
-    componentWillReceiveProps(){
-        debugger
-        if(this.props.registerSuccess){
-            this.handleClose();
+    handleSubmit = (event) => {
+        event.preventDefault();
+        if(this.props.onSubmit){
+            this.props.onSubmit(this.user);
         }
     }
 
-    render() {       
+    render() { 
+        console.log('render ',this.props)      
         return ( 
             <MuiThemeProvider theme={theme}>
             <JssProvider jss={jss} generateClassName={generateClassName}>
@@ -70,9 +64,9 @@ class RegisterUserDialog extends Component {
                 }
             >
                 <DialogTitle id="form-dialog-title">ثبت کاربر جدید</DialogTitle>
-                <form onSubmit={this.handleSubmit.bind(this)}>
+                <form onSubmit={this.handleSubmit}>
                 <DialogContent>
-                    <RegisterUser onChange={this.onUserChange.bind(this)}/>
+                    <RegisterUser onChange={this.onUserChange}/>
                 </DialogContent>
                 {this.props.registerError&&
                 <DialogContent>
@@ -100,13 +94,4 @@ class RegisterUserDialog extends Component {
     }
 }
 
-const mapStateToProps = state =>{
-    const { registering, registerError, registerSuccess, errorMessage } = state;
-    return{
-        registering,
-        registerError,
-        registerSuccess,
-        errorMessage,
-    }
-}
-export default connect(mapStateToProps)(RegisterUserDialog);
+export default RegisterUserDialog;

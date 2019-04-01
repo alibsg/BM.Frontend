@@ -130,7 +130,7 @@ class SignIn extends Component {
           </Typography>
           <form onSubmit={this.onSubmit.bind(this)} className={classes.form}>
             <FormControl margin="normal" required fullWidth onInvalid={this.myValidity.bind(this)}>
-              <InputLabel htmlFor="email">شماره موبایل/نام کاربری</InputLabel>
+              <InputLabel htmlFor="email">شماره تلفن همراه/نام کاربری</InputLabel>
               <Input id="userName" name="email" autoComplete="email" autoFocus value={this.state.userName} onChange={this.onChange.bind(this)}/>
             </FormControl>
             <FormControl margin="normal" required fullWidth onInvalid={this.myValidity.bind(this)}>

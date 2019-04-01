@@ -40,7 +40,6 @@ function register(user){
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(user),
     };
-
     return fetch(`${config.apiUrl}/users/register`, requestOptions)
         .then(handleResponse)
         .then(user => {            
@@ -55,6 +54,7 @@ function logout() {
 
 function handleResponse(response) {
     return response.text().then(text => {
+        console.log(text)
         const data = text && JSON.parse(text);
         if (!response.ok) {
             if (response.status === 401) {

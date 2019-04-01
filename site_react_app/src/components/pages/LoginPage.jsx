@@ -1,5 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/jsx-filename-extension */
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import Button from '@material-ui/core/Button';
@@ -17,17 +15,25 @@ class LoginPage extends Component {
     this.props.dispatch(userActions.logout());   
   }
 
-  onSubmit(username, password){    
+  onSubmit = (username, password) => {    
     this.props.dispatch(userActions.login(username,password));    
   }
 
-  onRegister(){
+  onRegister = () => {
     this.setState({ openRegister: true, });
   }
-  onRegisterUserModalSubmit(){
-    this.setState({ openRegister: false, });
+
+  onRegisterUserModalSubmit = (user) => {
+    if(user){
+      this.props.dispatch(userActions.register(user));
+    }
+    else{
+      this.setState({ openRegister: false, });
+    }
   }
+
   render() {
+    console.log('LoginPage render',this.props)
     return (
       <div        
         style={{          
@@ -46,9 +52,9 @@ class LoginPage extends Component {
         backgroundColor: 'transparent',        
       }}
       >  
-      <SignIn onSubmit={this.onSubmit.bind(this)} loading={this.props.loggingIn}/>
+      <SignIn onSubmit={this.onSubmit} loading={this.props.loggingIn}/>
       <Button 
-      onClick={this.onRegister.bind(this)}
+      onClick={this.onRegister}
       color='primary'
       size='medium'      
       style = {{
@@ -59,8 +65,13 @@ class LoginPage extends Component {
       ثبت کاربر جدید
       </Button>
       <RegisterUserDialog
-        open={this.state.openRegister} 
-        onSubmit={this.onRegisterUserModalSubmit.bind(this)}
+        open={this.state.openRegister && !this.props.registerSuccess} 
+        onSubmit={this.onRegisterUserModalSubmit}
+        loggingIn=        { this.props.loggingIn }
+        registering=      { this.props.registering }
+        registerError=    { this.props.registerError }
+        registerSuccess=  { this.props.registerSuccess }
+        errorMessage=     { this.props.errorMessage }
       />
       </div>
       </div>
@@ -69,9 +80,13 @@ class LoginPage extends Component {
 }
 
 const mapStateToProps = state => {
-  const { loggingIn } = state.authentication;
+  const { loggingIn, registering, registerError, registerSuccess, errorMessage  } = state.authentication;
   return {
-    loggingIn
+    loggingIn,
+    registering,
+    registerError,
+    registerSuccess,
+    errorMessage,
   };
 }
 

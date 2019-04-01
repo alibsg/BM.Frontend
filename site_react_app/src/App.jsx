@@ -1,7 +1,4 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/jsx-filename-extension */
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
 import { Router, Route, Switch } from 'react-router-dom'
 import { history } from './tools'
 import './App.css';
@@ -31,9 +28,4 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => {  
-  return {    
-  };
-}
-
-export default connect(mapStateToProps)(App);
+export default App;

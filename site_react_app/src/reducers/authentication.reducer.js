@@ -5,25 +5,38 @@ let user = JSON.parse(localStorage.getItem('user'));
 const initialState = user ? {loggedIn: true, user } : {};
 
 export const authentication = (state = initialState, action) => {
+    console.log(action.type,action.user);
     switch( action.type){
         case userConstants.LOGIN_REQUEST:
-            console.log(action.type,action.user);
             return {
                 loggingIn: true,
                 user: action.user,
             };
+            
         case userConstants.LOGIN_SUCCESS:
-            console.log(action.type,action.user);
             return {
                 loggedIn: true,
                 user: action.user,
             };
 
         case userConstants.LOGIN_FAILURE:
-            console.log(action.type,action.user);
             return {};
+
         case userConstants.LOGOUT:
             return {};
+
+        case userConstants.REGISTER_REQUEST:
+            return { registering: true };
+
+        case userConstants.REGISTER_SUCCESS:
+            return { registerSuccess: true };
+
+        case userConstants.REGISTER_FAILURE:
+            return {
+              registerError: true,
+              errorMessage: action.user,
+            };
+
         default:
             return state;
     }
