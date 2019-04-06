@@ -1,7 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-disable react/jsx-one-expression-per-line */
 import React , { Component } from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';

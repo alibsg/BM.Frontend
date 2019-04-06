@@ -4,6 +4,7 @@ import jMoment from "moment-jalaali";
 import JalaliUtils from "@date-io/jalaali";
 import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers'
 import TextField from '@material-ui/core/TextField';
+import { config } from '../../constants'
 
 jMoment.loadPersian({ dialect: "persian-modern", usePersianDigits: true });
 
@@ -12,17 +13,17 @@ class UserEdit extends Component{
         super();
         this.state = {
             user:{
-                FirstName :'علی', 
-                LastName: 'باسقی',
-                Sex: 1,
-                BDate: new Date(),
-                MobileNumber: '09123459221',
-                Email: 'alibsg@gmail.com',
-                Education: 'مهندس کامپیوتر', 
-                MaritalStatus: 1,
-                UserName:'alibsg',
-                Password: 'password',
-                PasswordConfirm: 'password',
+                FirstName :'', 
+                LastName: '',
+                Sex: 0,
+                BDate: null,
+                MobileNumber: '',
+                Email: '',
+                Education: '', 
+                MaritalStatus: 0,
+                UserName:'',
+                Password: '',
+                PasswordConfirm: '',
             }
         }
         
@@ -115,6 +116,11 @@ class UserEdit extends Component{
     {
         let fieldProp=this.userFieldProp[idx];
         const { user } = this.state;
+        let now = new Date();
+        let year = now.getFullYear();
+        let month = now.getMonth();
+        let day = now.getDate();
+
         if(fieldProp.type === 'date'){
             return(
                 <MuiPickersUtilsProvider key={idx} utils={JalaliUtils} locale="fa">
@@ -124,12 +130,15 @@ class UserEdit extends Component{
                     fullWidth
                     label={fieldProp.name}
                     id={`${key}`}
+                    required={fieldProp.required}
                     disableFuture
                     okLabel="تأیید"
                     cancelLabel="لغو"
                     clearLabel="پاک کردن"
                     labelFunc={date => (date ? date.format("jYYYY/jMM/jDD") : "")}
-                    value={user[`${key}`]} 
+                    value={user[`${key}`]}
+                    minDate={new Date(year - config.maxAge,month,day)} 
+                    maxDate={ new Date(year - config.minAge,month,day)}
                     onChange={this.onBirthDateChange.bind(this)}
                     animateYearScrolling={false}
                     />
