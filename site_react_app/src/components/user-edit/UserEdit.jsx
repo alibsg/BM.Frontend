@@ -5,6 +5,7 @@ import JalaliUtils from "@date-io/jalaali";
 import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers'
 import TextField from '@material-ui/core/TextField';
 import { config } from '../../constants'
+import { User } from '../../services'
 
 jMoment.loadPersian({ dialect: "persian-modern", usePersianDigits: true });
 
@@ -12,88 +13,41 @@ class UserEdit extends Component{
     constructor(){
         super();
         this.state = {
-            user:{
-                FirstName :'', 
-                LastName: '',
-                Sex: 0,
-                BDate: null,
-                MobileNumber: '',
-                Email: '',
-                Education: '', 
-                MaritalStatus: 0,
-                UserName:'',
-                Password: '',
-                PasswordConfirm: '',
-            }
+            user: new User()
         }
-        
-        this.userFieldProp = [
-            {
-                name:'نام',
-                required:true,
-            },
-            {
-                name:'نام خانوادگی',
-                required:true,                
-            },
-            {
-                name: 'جنسیت',
-                required:true,
-                options: ['زن','مرد']
-            },
-            {
-                name:'تاریخ تولد',
-                required:true,
-                type: 'date',
-            },            
-            {
-                name:'شماره تلفن همراه',
-                required:true,
-            },
-            {
-                name:'ایمیل',
-                type: 'email',
-            },
-            {
-                name:'تحصیلات',
-            },
-            {
-                name:'مجرد/متاهل',
-                required:true,
-                options: ['مجرد','متاهل']
-            },
-            {
-                name:'نام کاربری',
-                required:true,
-            },
-            {
-                name:'رمز عبور',
-                required:true,
-                type:'password',
-            },
-            {
-                name:'تکرار رمز عبور',
-                required:true,
-                type:'password',
-            },
-        ]
     }
     componentWillReceiveProps( props)
     {
         if(props.onChange){
-            props.onChange(this.state.user);
+            props.onChange(this.state.user.user);
         }
     }
 
-    onBirthDateChange(date){
-        this.setState({ user: {...this.state.user ,  BDate: date._d}});
+    onBirthDateChange = date => {
+        this.setState({ 
+            user: {
+                ...this.state.user ,
+                user:{
+                    ...this.state.user.user ,
+                    BDate: date._d
+                }
+            }
+        });
         if(this.props.onChange){
-            this.props.onChange(this.state.user);
+            this.props.onChange(this.state.user.user);
         }
     }
-    onChange(event){
-        this.setState({ user: {...this.state.user , [event.target.id || event.target.name] : event.target.value}});
+    onChange = event => {
+        this.setState({ 
+            user: {
+                ...this.state.user ,
+                user: {
+                    ...this.state.user.user, [event.target.id || event.target.name] : event.target.value
+                }  
+            }
+        });
         if(this.props.onChange){
+            debugger
             this.props.onChange(this.state.user);
         }
     }
@@ -114,13 +68,12 @@ class UserEdit extends Component{
 
     getInputComponnet = (key,idx) =>
     {
-        let fieldProp=this.userFieldProp[idx];
-        const { user } = this.state;
+        let fieldProp = this.state.user.userFieldProp[idx];
+        const { user } = this.state.user;
         let now = new Date();
         let year = now.getFullYear();
         let month = now.getMonth();
         let day = now.getDate();
-
         if(fieldProp.type === 'date'){
             return(
                 <MuiPickersUtilsProvider key={idx} utils={JalaliUtils} locale="fa">
@@ -139,7 +92,7 @@ class UserEdit extends Component{
                     value={user[`${key}`]}
                     minDate={new Date(year - config.maxAge,month,day)} 
                     maxDate={ new Date(year - config.minAge,month,day)}
-                    onChange={this.onBirthDateChange.bind(this)}
+                    onChange={this.onBirthDateChange}
                     animateYearScrolling={false}
                     />
                 </div>
@@ -161,7 +114,6 @@ class UserEdit extends Component{
                     autoComplete='off' 
                     value={user[`${key}`]} 
                     select={fieldProp.options?true:false}
-                    //onInvalid={fieldProp.type === 'password' ? this.onPasswordValidation.bind(this):undefined}
                     SelectProps={
                         fieldProp.options?
                         {MenuProps: {
@@ -171,7 +123,7 @@ class UserEdit extends Component{
                         }}:
                         null
                     }
-                    onChange={this.onChange.bind(this)}
+                    onChange={this.onChange}
                 >
                     {fieldProp.options?
                         fieldProp.options.map((option,idx) =>(
@@ -189,45 +141,11 @@ class UserEdit extends Component{
     
     render(){ 
         
-        const { user } = this.state;
+        const { user } = this.state.user;
         return(
             <div>
                 {Object.keys(user).map( (key,idx) => (
                     this.getInputComponnet(key,idx)
-                    /*
-                    <TextField
-                    key={idx}
-                    fullWidth
-                    margin="normal"
-                    style={{padding: '10px' }} 
-                    label= {this.userFieldProp[idx].name}
-                    required={this.userFieldProp[idx].required}
-                    type={this.userFieldProp[idx].type? this.userFieldProp[idx].type:null} 
-                    id={`${key}`} 
-                    name={`${key}`} 
-                    autoComplete='off' 
-                    value={user[`${key}`]} 
-                    select={this.userFieldProp[idx].options?true:false}
-                    //onInvalid={this.userFieldProp[idx].type === 'password' ? this.onPasswordValidation.bind(this):undefined}
-                    SelectProps={
-                        this.userFieldProp[idx].options?
-                        {MenuProps: {
-                            style:{
-                                width: 600,
-                            }
-                        }}:
-                        null
-                    }
-                    onChange={this.onChange.bind(this)}
-                >
-                    {this.userFieldProp[idx].options?
-                        this.userFieldProp[idx].options.map((option,idx) =>(
-                            <MenuItem key={idx} value={option}>
-                            {option}
-                            </MenuItem>
-                        )):null
-                    }
-                </TextField>*/
                 ))}  
             </div>                                      
         );

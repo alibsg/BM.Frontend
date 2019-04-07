@@ -14,7 +14,7 @@ const styles = theme => ({
 });
 
 class RegisterUser extends Component{
-    onUserChange(user){
+    onUserChange = user => {
       const { onChange } = this.props;
       if(onChange)
         onChange(user);
@@ -23,7 +23,7 @@ class RegisterUser extends Component{
       const { classes } = this.props;
       return(
         <Paper className={classes.paper}>
-              <UserEdit onChange={this.onUserChange.bind(this)}/>                           
+              <UserEdit onChange={this.onUserChange}/>                           
         </Paper>
       );
     }

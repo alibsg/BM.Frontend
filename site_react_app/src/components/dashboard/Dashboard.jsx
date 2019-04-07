@@ -10,21 +10,25 @@ import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
-import SimpleLineChart from './SimpleLineChart';
+import PersonIcon from '@material-ui/icons/Person';
+import {MuiThemeProvider, createMuiTheme, createGenerateClassName, jssPreset} from '@material-ui/core/styles'
+import { create } from 'jss';
+import rtl from 'jss-rtl';
+import JssProvider from 'react-jss/lib/JssProvider';
+import { mainListItems } from './listItems';
 import SimpleTable from './SimpleTable';
 
 const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
+    direction: 'rtl',
     display: 'flex',
   },
   toolbar: {
+    direction: 'rtl',
     paddingRight: 24, // keep right padding when drawer closed
   },
   toolbarIcon: {
@@ -42,7 +46,7 @@ const styles = theme => ({
     }),
   },
   appBarShift: {
-    marginLeft: drawerWidth,
+    marginRight: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -84,10 +88,7 @@ const styles = theme => ({
     padding: theme.spacing.unit * 3,
     height: '100vh',
     overflow: 'auto',
-  },
-  chartContainer: {
-    marginLeft: -22,
-  },
+  },  
   tableContainer: {
     height: 320,
   },
@@ -95,6 +96,20 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit * 2,
   },
 });
+
+const theme = createMuiTheme({
+  direction: 'rtl',
+  typography: {
+    useNextVariants: true,
+    fontFamily: '"Vazir", sans-serif'
+  },
+});
+
+// Configure JSS
+const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
+
+// Custom Material-UI class name generator.
+const generateClassName = createGenerateClassName();
 
 class Dashboard extends React.Component {
   state = {
@@ -109,10 +124,24 @@ class Dashboard extends React.Component {
     this.setState({ open: false });
   };
 
+  onDrawerButtonClick = (event) => {
+    switch(event.currentTarget.id){
+      case 'drawer_button_exit':
+        if(this.props.onDashboardExit){
+          this.props.onDashboardExit()
+        }
+      break
+      default:
+        break
+    }
+  }
+  
+
   render() {
     const { classes } = this.props;
-
     return (
+      <MuiThemeProvider theme={theme}>
+      <JssProvider jss={jss} generateClassName={generateClassName}>
       <div className={classes.root}>
         <CssBaseline />
         <AppBar
@@ -135,13 +164,12 @@ class Dashboard extends React.Component {
               color="inherit"
               noWrap
               className={classes.title}
+              direction='rtl'
             >
-              Dashboard
+              پیشخوان
             </Typography>
             <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
+                <PersonIcon />
             </IconButton>
           </Toolbar>
         </AppBar>
@@ -158,26 +186,26 @@ class Dashboard extends React.Component {
             </IconButton>
           </div>
           <Divider />
-          <List>{mainListItems}</List>
+          <List>{mainListItems(this)}</List>
           <Divider />
-          <List>{secondaryListItems}</List>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
-          <Typography variant="h4" gutterBottom component="h2">
-            Orders
-          </Typography>
-          <Typography component="div" className={classes.chartContainer}>
-            <SimpleLineChart />
-          </Typography>
-          <Typography variant="h4" gutterBottom component="h2">
-            Products
+          <Typography 
+            variant="h4" 
+            gutterBottom 
+            component="h2"
+            direction='rtl'
+          >
+            کاربران
           </Typography>
           <div className={classes.tableContainer}>
             <SimpleTable />
           </div>
         </main>
       </div>
+      </JssProvider>
+      </MuiThemeProvider>
     );
   }
 }
