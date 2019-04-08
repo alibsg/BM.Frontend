@@ -74,6 +74,9 @@ class UserEdit extends Component{
         let year = now.getFullYear();
         let month = now.getMonth();
         let day = now.getDate();
+        if(!fieldProp.visible){
+            return null;
+        }
         if(fieldProp.type === 'date'){
             return(
                 <MuiPickersUtilsProvider key={idx} utils={JalaliUtils} locale="fa">
@@ -136,7 +139,6 @@ class UserEdit extends Component{
 
             )
         }
-
     }
     
     render(){ 

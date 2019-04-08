@@ -19,6 +19,7 @@ import rtl from 'jss-rtl';
 import JssProvider from 'react-jss/lib/JssProvider';
 import { mainListItems } from './listItems';
 import SimpleTable from './SimpleTable';
+import { viewPanelEnum } from './viewPanelEnum.ts'
 
 const drawerWidth = 240;
 
@@ -112,8 +113,10 @@ const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 const generateClassName = createGenerateClassName();
 
 class Dashboard extends React.Component {
+  
   state = {
     open: true,
+    viewPanel: viewPanelEnum.nothing,
   };
 
   handleDrawerOpen = () => {
@@ -130,7 +133,15 @@ class Dashboard extends React.Component {
         if(this.props.onDashboardExit){
           this.props.onDashboardExit()
         }
-      break
+      break;
+      case 'drawer_button_users':
+        this.setState({ ...this.state ,viewPanel: viewPanelEnum.users, });   
+        console.log(this.state);     
+      break;
+      case 'drawer_button_reports':
+      this.setState({ ...this.state ,viewPanel: viewPanelEnum.reports, });   
+        console.log(this.state);
+      break;
       default:
         break
     }
@@ -139,6 +150,7 @@ class Dashboard extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { viewPanel } = this.state.viewPanel;
     return (
       <MuiThemeProvider theme={theme}>
       <JssProvider jss={jss} generateClassName={generateClassName}>
@@ -166,7 +178,7 @@ class Dashboard extends React.Component {
               className={classes.title}
               direction='rtl'
             >
-              پیشخوان
+              پنل کاربری
             </Typography>
             <IconButton color="inherit">
                 <PersonIcon />
@@ -189,24 +201,30 @@ class Dashboard extends React.Component {
           <List>{mainListItems(this)}</List>
           <Divider />
         </Drawer>
-        <main className={classes.content}>
-          <div className={classes.appBarSpacer} />
-          <Typography 
-            variant="h4" 
-            gutterBottom 
-            component="h2"
-            direction='rtl'
-          >
-            کاربران
-          </Typography>
-          <div className={classes.tableContainer}>
-            <SimpleTable />
-          </div>
-        </main>
+        { this.state.viewPanel === viewPanelEnum.users && ShowUsersPanel()}
       </div>
       </JssProvider>
       </MuiThemeProvider>
     );
+
+    function ShowUsersPanel() {
+      return(
+        <main className={classes.content}>
+            <div className={classes.appBarSpacer} />
+            <Typography 
+              variant="h4" 
+              gutterBottom 
+              component="h2"
+              direction='rtl'
+            >
+              کاربران
+            </Typography>
+            <div className={classes.tableContainer}>
+              <SimpleTable />
+            </div>
+        </main>
+      )
+    }
   }
 }
 

@@ -32,8 +32,9 @@ const data = [
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
-function SimpleTable(props) {
+function UsersTable(props) {
   const { classes } = props;
+  //const { userFieldProp } = props.user;
 
   return (
     <Paper className={classes.root}>
@@ -65,8 +66,8 @@ function SimpleTable(props) {
   );
 }
 
-SimpleTable.propTypes = {
+UsersTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SimpleTable);
+export default withStyles(styles)(UsersTable);
