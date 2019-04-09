@@ -47,8 +47,7 @@ class UserEdit extends Component{
             }
         });
         if(this.props.onChange){
-            debugger
-            this.props.onChange(this.state.user);
+            this.props.onChange(this.state.user.user);
         }
     }
     

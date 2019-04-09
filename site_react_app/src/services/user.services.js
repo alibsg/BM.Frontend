@@ -1,10 +1,12 @@
 import { config } from '../constants'
 import { isAllDigit } from '../tools'
+import { authHeader } from '../tools/auth.header'
 
 export const userService = {
     login,
     logout,
     register,
+    getAll,
 }
 
 function login(username, password){
@@ -45,6 +47,14 @@ function register(user){
         .then(user => {            
             return user;
         });
+}
+
+function getAll(){
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+    };
+    return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);        
 }
 
 function logout() {

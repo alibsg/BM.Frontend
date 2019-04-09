@@ -5,7 +5,8 @@ import { history } from '../tools/history'
 export const userActions = {
     login, 
     logout,
-    register,   
+    register,
+    getAll,   
 }
 
 function login(username, password) {
@@ -40,14 +41,27 @@ function register(user){
                 dispatch(toReducer(userConstants.REGISTER_FAILURE,error.toString()));
             }
         )
-
     }
 
+}
+
+function getAll(){
+    return dispatch => {
+        dispatch(toReducer(userConstants.GETALL_REQUEST));
+        userService.getAll().then(
+            users =>{
+                dispatch(toReducer(userConstants.GETALL_SUCCESS,users))
+            },
+            error =>{
+                dispatch(toReducer(userConstants.GETALL_FAILURE,error.toString()));
+            }
+        )
+    }
 }
 
 function toReducer(type,payload) {
     return {
         type,
-        user: payload,
+        payload,
     }
 } 

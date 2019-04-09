@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { withStyles } from '@material-ui/core/styles';
@@ -18,8 +19,9 @@ import { create } from 'jss';
 import rtl from 'jss-rtl';
 import JssProvider from 'react-jss/lib/JssProvider';
 import { mainListItems } from './listItems';
-import SimpleTable from './SimpleTable';
+import UsersTable from './UsersTable';
 import { viewPanelEnum } from './viewPanelEnum.ts'
+import { userActions } from '../../actions'
 
 const drawerWidth = 240;
 
@@ -135,22 +137,27 @@ class Dashboard extends React.Component {
         }
       break;
       case 'drawer_button_users':
-        this.setState({ ...this.state ,viewPanel: viewPanelEnum.users, });   
-        console.log(this.state);     
+        this.props.dispatch(userActions.getAll)
+        this.setState({ ...this.state ,viewPanel: viewPanelEnum.users, });    
       break;
       case 'drawer_button_reports':
-      this.setState({ ...this.state ,viewPanel: viewPanelEnum.reports, });   
-        console.log(this.state);
+        this.setState({ ...this.state ,viewPanel: viewPanelEnum.reports, });   
       break;
       default:
         break
     }
   }
-  
 
   render() {
-    const { classes } = this.props;
-    const { viewPanel } = this.state.viewPanel;
+    const { 
+      classes,
+      users,
+      gettingUsers,
+      getUsersSuccess,
+      getUsersErrorMessage,
+      getUsersError, 
+    } = this.props;
+    const { viewPanel } = this.state;
     return (
       <MuiThemeProvider theme={theme}>
       <JssProvider jss={jss} generateClassName={generateClassName}>
@@ -201,7 +208,7 @@ class Dashboard extends React.Component {
           <List>{mainListItems(this)}</List>
           <Divider />
         </Drawer>
-        { this.state.viewPanel === viewPanelEnum.users && ShowUsersPanel()}
+        { viewPanel === viewPanelEnum.users && ShowUsersPanel()}
       </div>
       </JssProvider>
       </MuiThemeProvider>
@@ -220,7 +227,7 @@ class Dashboard extends React.Component {
               کاربران
             </Typography>
             <div className={classes.tableContainer}>
-              <SimpleTable />
+              <UsersTable />
             </div>
         </main>
       )
@@ -232,4 +239,22 @@ Dashboard.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Dashboard);
+const mapStateToProps = state =>{
+  const { 
+      users,
+      gettingUsers,
+      getUsersSuccess,
+      getUsersErrorMessage,
+      getUsersError, 
+  } = state;
+  return {
+      users,
+      gettingUsers,
+      getUsersSuccess,
+      getUsersErrorMessage,
+      getUsersError,
+  }
+}
+
+export default connect(mapStateToProps)(withStyles(styles)(Dashboard))
+

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { userService } from '../../services'
 import Dashboard from '../dashboard/Dashboard'
 
@@ -17,9 +16,5 @@ class DashboardPage extends Component{
     }
 }
 
-const mapStateToProps = state =>{
-    return {}
-}
-
-export default connect(mapStateToProps)(DashboardPage)
+export default DashboardPage;
 
