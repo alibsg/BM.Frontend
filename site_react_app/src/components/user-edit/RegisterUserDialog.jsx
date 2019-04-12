@@ -45,8 +45,7 @@ class RegisterUserDialog extends Component {
         }
     }
 
-    render() { 
-        console.log('render ',this.props)      
+    render() {       
         return ( 
             <MuiThemeProvider theme={theme}>
             <JssProvider jss={jss} generateClassName={generateClassName}>

@@ -1,6 +1,6 @@
 import { userConstants } from '../constants'
 
-function userReducer(state= {} , action){
+export function userReducer(state= {} , action){
     switch(action.type){
         case userConstants.GETALL_REQUEST:
             return{

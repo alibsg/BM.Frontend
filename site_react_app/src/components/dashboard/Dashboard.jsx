@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
+import compose from 'recompose/compose'
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { withStyles } from '@material-ui/core/styles';
@@ -14,6 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import PersonIcon from '@material-ui/icons/Person';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import {MuiThemeProvider, createMuiTheme, createGenerateClassName, jssPreset} from '@material-ui/core/styles'
 import { create } from 'jss';
 import rtl from 'jss-rtl';
@@ -91,7 +93,8 @@ const styles = theme => ({
     padding: theme.spacing.unit * 3,
     height: '100vh',
     overflow: 'auto',
-  },  
+  }, 
+  
   tableContainer: {
     height: 320,
   },
@@ -137,7 +140,7 @@ class Dashboard extends React.Component {
         }
       break;
       case 'drawer_button_users':
-        this.props.dispatch(userActions.getAll)
+        this.props.dispatch(userActions.getAll())
         this.setState({ ...this.state ,viewPanel: viewPanelEnum.users, });    
       break;
       case 'drawer_button_reports':
@@ -215,22 +218,32 @@ class Dashboard extends React.Component {
     );
 
     function ShowUsersPanel() {
-      return(
-        <main className={classes.content}>
-            <div className={classes.appBarSpacer} />
-            <Typography 
-              variant="h4" 
-              gutterBottom 
-              component="h2"
-              direction='rtl'
-            >
-              کاربران
-            </Typography>
-            <div className={classes.tableContainer}>
-              <UsersTable />
-            </div>
-        </main>
-      )
+      if(gettingUsers){
+        return(
+          <main className={classes.content}>
+              <div className={classes.appBarSpacer} />
+              <LinearProgress />
+          </main>
+        )
+      }
+      else if(getUsersSuccess){
+        return(
+          <main className={classes.content}>
+              <div className={classes.appBarSpacer} />
+              <Typography 
+                variant="h4" 
+                gutterBottom 
+                component="h2"
+                direction='rtl'
+              >
+                کاربران
+              </Typography>
+              <div className={classes.tableContainer}>
+                <UsersTable users={users}/>
+              </div>
+          </main>
+        )
+      }
     }
   }
 }
@@ -246,15 +259,21 @@ const mapStateToProps = state =>{
       getUsersSuccess,
       getUsersErrorMessage,
       getUsersError, 
-  } = state;
+  } = state.userReducer;
   return {
-      users,
-      gettingUsers,
-      getUsersSuccess,
-      getUsersErrorMessage,
-      getUsersError,
+    users,
+    gettingUsers,
+    getUsersSuccess,
+    getUsersErrorMessage,
+    getUsersError,
   }
 }
 
-export default connect(mapStateToProps)(withStyles(styles)(Dashboard))
+//export default withStyles(styles)(connect(mapStateToProps)(Dashboard))
 
+export default compose(
+  withStyles(styles, {
+      name: 'Dashboard',
+  }),
+  connect(mapStateToProps),
+)(Dashboard);

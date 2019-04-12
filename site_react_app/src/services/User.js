@@ -1,19 +1,21 @@
 
+export class UserData {
+    Id= 0;
+    FirstName =''; 
+    LastName= '';
+    Sex= 0;
+    BDate= null;
+    MobileNumber= '';
+    Email= '';
+    Education= ''; 
+    MaritalStatus= 0;
+    UserName='';
+    Password= '';
+    PasswordConfirm= '';
+
+}
 export class User{
-    user = {
-        Id: 0,
-        FirstName :'', 
-        LastName: '',
-        Sex: 0,
-        BDate: null,
-        MobileNumber: '',
-        Email: '',
-        Education: '', 
-        MaritalStatus: 0,
-        UserName:'',
-        Password: '',
-        PasswordConfirm: '',
-    }
+    user = new UserData();
     userFieldProp = [
         {
             name:'شناسه',            

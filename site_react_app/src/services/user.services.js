@@ -52,7 +52,7 @@ function register(user){
 function getAll(){
     const requestOptions = {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: authHeader(),
     };
     return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);        
 }
@@ -64,7 +64,7 @@ function logout() {
 
 function handleResponse(response) {
     return response.text().then(text => {
-        console.log(text)
+        console.log('handleResponse',text)
         const data = text && JSON.parse(text);
         if (!response.ok) {
             if (response.status === 401) {

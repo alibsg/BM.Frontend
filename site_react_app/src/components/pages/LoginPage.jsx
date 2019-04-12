@@ -33,7 +33,6 @@ class LoginPage extends Component {
   }
 
   render() {
-    console.log('LoginPage render',this.props)
     return (
       <div        
         style={{          
@@ -80,7 +79,13 @@ class LoginPage extends Component {
 }
 
 const mapStateToProps = state => {
-  const { loggingIn, registering, registerError, registerSuccess, errorMessage  } = state.authentication;
+  const { 
+    loggingIn, 
+    registering, 
+    registerError, 
+    registerSuccess, 
+    errorMessage  
+  } = state.authentication;
   return {
     loggingIn,
     registering,
